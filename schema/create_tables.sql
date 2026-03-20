@@ -1,4 +1,4 @@
-create table GL_JE_Lines (
+CREATE TABLE GL_JE_LINES (
   JE_HEADER_ID            INTEGER,
   JE_LINE_NUM             INTEGER,
   CODE_COMBINATION_ID     INTEGER,
@@ -8,6 +8,23 @@ create table GL_JE_Lines (
   ACCOUNTED_CR            DECIMAL(18,2)
   CURRENCY_CODE           VARCHAR(10)
   DESCRIPTION             VARCHAR(255)
+  PERIOD_NAME             VARCHAR(10),
+  EFFECTIVE_DATE          DATE,
+  CREATION_DATE           DATE,
+  );
+
+CREATE TABLE GL_JE_HEADER (
+  JE_HEADER_ID           INTEGER,
+  LEDGER_ID              INTEGER,
+  JE_SOURCE              VARCHAR(20),
+  NAME                   VARCHAR(255),
+  CURRENCY_CODE          VARCHAR(20),
+  STATUS                 VARCHAR(10),
+  ACTUAL_FLAG            VARCHAR(10),
+  CREATED_BY             VARCHAR(20),
+  JE_BATCH_ID            INTEGER,
+  DESCRIPTION            VARCHAR(255),
+  REVERSED_JE_HEADER_ID  INTEGER,
   );
 
 
