@@ -19,3 +19,12 @@ VALUES
 (201, 'SYSTEM_USER', 'System generated journals'),
 (301, 'UPLOAD_USER', 'Spreadsheet upload user');
 
+INSERT INTO GL_JE_BATCHES (
+    JE_BATCH_ID,
+    NAME,
+    DESCRIPTION
+)
+VALUES
+(5001, 'JAN25_MANUAL_BATCH', 'January manual adjustment batch'),
+(5002, 'JAN25_UPLOAD_BATCH', 'January spreadsheet upload batch'),
+(5003, 'FEB25_SYSTEM_BATCH', 'February system-generated batch');
