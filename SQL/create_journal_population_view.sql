@@ -28,7 +28,6 @@ NOTE:
   GL_JE_LINES is intentionally retained as the base population.
   LEFT JOIN is used so unmatched line records are not dropped during the enrichment.
 ========================================================================================================================================= */
-
   SELECT 
 /* ==============CORE KEYS================*/
   L.JE_HEADER_ID,
