@@ -19,5 +19,39 @@ Design Principles
 5. Retain only posted, actual, in-scope, primary-ledger journals
 ====================================================================================================================================== */
 
+CREATE VIEW JOURNAL_POPULATION AS 
+
+WITH RAW_JOINS AS (
+/* =====================================================================================================================================
+NOTE:
+  This layer performs relational row-level joins only.
+  GL_JE_LINES is intentionally retained as the base population.
+  LEFT JOIN is used so unmatched line records are not dropped during the enrichment.
+========================================================================================================================================= */
+
+  SELECT 
+/* ==============CORE KEYS================*/
+  L.JE_HEADER_ID,
+  L.JE_LINE_NUM,
+  L.CODE_COMBINATION_ID,
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
