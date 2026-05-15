@@ -37,12 +37,12 @@ NOTE:
   H.LEDGER_ID,
   H.CREATED_BY,
 
-/* ==============PERIDS AND DATES========================*/
+/* ==============PERIDS AND DATES=================================*/
   L.PERIOD_NAME,
   L.EFFECTIVE_DATE,
   L.CREATION_DATE AS LINE_CREATION_DATE,
 
-/* ==============SOURCE AWARE TEXT FIELDS================*/
+/* ==============SOURCE AWARE TEXT FIELDS=========================*/
   L.DESCIPRTION AS LINE_DESCRTPTION,
   H.DESCRIPTION AS HEADER_DESCRIPTION,
   B.DESCRIPTION AS BATCH_DESCRIPTION,
@@ -51,9 +51,66 @@ NOTE:
   B.NAME AS BATCH_NAME,
   LED.LEDER_NAME AS LEDHER_NAME,
   
+/* ==============CURRENCY FIELDS==================================*/
+  L.CURRENCY_CODE AS LINE_CURRENCY_CODE,
+  H.CURRENCY_CODE AS HEADER_CURRENCY_CODE,
 
+/* ==============AMOUNT FIELDS WITH NULL HANDLING==================
+  NOTE:
+  COALESCE(VALUE,0) MEANS:
+  - Use the field value as 0 if present.
+  - otherwise replace null with 0.
+  This prevents the downstream net calculation from returning NULL.
+*/
+  COALESCE(L.ENTERED_DR,0) AS ENTERED_DR,
+  COALESCE(L.ENTERED_CR,0) AS ENTERED_CR,
+  COALESCE(L.ACCOUNTED_DR,0) AS ACCOUNTED_DR,
+  COALESCE(L.ACCOUNTED_CR,0) AS ACCOUNTED_CR,
 
+/* ==============HEADER ATTRIBUTE==================================*/
+  H.JE_SOURCE,
+  H.STATUS,
+  H.ACTUAL_FLAG,
+  H.REVERSED_JE_HEADER_ID,
 
+/* ==============CODE COMBINATION ATTRIBUTE========================*/
+  CC.ACCOUNT_TYPE,
+  SS.SUMMERY_FLAG,
+  CC.SEGMENT1,
+  CC.SEGMENT2,
+  CC.SEGMENT3,
+  CC.SEGMENT4,
+
+/* ==============USER ATTRIBUTE=====================================*/ 
+  U.USER_NAME,
+  U.USER_DESCRIPTION,
+
+/* ==============LEDGER ATTRIBUTE====================================*/  
+  LED.DESCRIPTION AS LEDGER_DESCRIPTION,
+  LED.LEDGER_CATEGORY_CODE
+
+FROM GL_JE_LINES L
+  
+LEFT JOIN GL_JE_HEADER H
+  ON L.JE_HEADER_ID = H.JE_HEADER_ID
+
+LEFT JOIN GL_JE_CODE_COMBINATIONS CC
+  ON L.CODE_COMBINATION_ID = CC.CODE_COMBINATION_ID
+
+LEFT JOIN GL_JE_BATCH B
+  ON H.JE_BATCH_ID = B.JE_BATCH_ID
+
+LEFT JOIN FND_USER U
+  ON H.CREATED_BY = U.USER_ID
+
+LEFT JOIN GL_LEDGERS LED
+  ON H.LEDGER_ID = LED.LEDGER_ID
+
+),
+
+STANDARDIZED AS (
+
+  
 
 
 
