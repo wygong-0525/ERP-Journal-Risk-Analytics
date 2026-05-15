@@ -29,12 +29,28 @@ NOTE:
   LEFT JOIN is used so unmatched line records are not dropped during the enrichment.
 ========================================================================================================================================= */
   SELECT 
-/* ==============CORE KEYS================*/
+/* ==============CORE KEYS===============================*/
   L.JE_HEADER_ID,
   L.JE_LINE_NUM,
   L.CODE_COMBINATION_ID,
-  
+  H.JE_BATCH_ID,
+  H.LEDGER_ID,
+  H.CREATED_BY,
 
+/* ==============PERIDS AND DATES========================*/
+  L.PERIOD_NAME,
+  L.EFFECTIVE_DATE,
+  L.CREATION_DATE AS LINE_CREATION_DATE,
+
+/* ==============SOURCE AWARE TEXT FIELDS================*/
+  L.DESCIPRTION AS LINE_DESCRTPTION,
+  H.DESCRIPTION AS HEADER_DESCRIPTION,
+  B.DESCRIPTION AS BATCH_DESCRIPTION,
+
+  H.NAME AS HEADER_NAME,
+  B.NAME AS BATCH_NAME,
+  LED.LEDER_NAME AS LEDHER_NAME,
+  
 
 
 
