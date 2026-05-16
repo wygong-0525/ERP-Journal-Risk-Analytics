@@ -29,7 +29,7 @@ NOTE:
   LEFT JOIN is used so unmatched line records are not dropped during the enrichment.
 ========================================================================================================================================= */
   SELECT 
-/* ==============CORE KEYS===============================*/
+/* ==============CORE KEYS========================================*/
   L.JE_HEADER_ID,
   L.JE_LINE_NUM,
   L.CODE_COMBINATION_ID,
@@ -67,13 +67,13 @@ NOTE:
   COALESCE(L.ACCOUNTED_DR,0) AS ACCOUNTED_DR,
   COALESCE(L.ACCOUNTED_CR,0) AS ACCOUNTED_CR,
 
-/* ==============HEADER ATTRIBUTE==================================*/
+/* ==============HEADER ATTRIBUTE===================================*/
   H.JE_SOURCE,
   H.STATUS,
   H.ACTUAL_FLAG,
   H.REVERSED_JE_HEADER_ID,
 
-/* ==============CODE COMBINATION ATTRIBUTE========================*/
+/* ==============CODE COMBINATION ATTRIBUTE=========================*/
   CC.ACCOUNT_TYPE,
   SS.SUMMERY_FLAG,
   CC.SEGMENT1,
@@ -173,6 +173,58 @@ STANDARDIZED AS (
   WHEN (ACCOUNTED_DR - ACCOUNTED_CR) < 0 THEN 'CREDIT'
   ELSE 'ZERO'
   END AS ACCOUNTED_NET_DIRECTION,
+
+  /* ==============ORIGINAL ACCOUNTING ATTRIBUTES===================================*/
+  ACCOUNT_TYPE,
+  SUMMARY_FLAG,
+  JE_SOURCE,
+  STATUS,
+  ACTUAL_FLAG,
+  REVERSED_JE_HEADER_ID,
+  USER_NAME,
+  USER_DESCRIPTION,
+  LEDGER_DESCRIPTION,
+  LEDGER_CATEGORY_CODE,
+
+  /* ==============DERIVED ACCOUNTING GROUP===========================================
+  NOTE:
+  Native account type values are preserved, while BS/PL grouping is derived in the transformation layer.
+  */
+  CASE
+  WHEN ACCOUNT_TYPE IN ('A', 'L', 'O') THEN 'BS'
+  WHEN ACCOUNT_TYPE IN ('R', 'E') THEN 'PL'
+  ELSE 'OTHER'
+  END AS BS_PL_FLAG,
+
+  /* ==============RETAINED EARNINGS FLAG===========================================
+  Assumes account code 300000 represents retained earnings */
+  CASE
+  WHEN ACCOUNT_TYPE = 'O' AND SEGMENT3 = 300000 THEN 'Y'
+  ELSE 'N'
+  END AS RETAINED_EARNINGS_FLAG,
+
+  /* ==============MANUAL JOURNAL INDICATOR========================================*/
+  CASE
+  WHEN JE_SOURCE IN ('MANUAL', 'SPREADSHEET') THEN 'Y'
+  ELSE 'N'
+  END AS MANUAL_JE_FLAG
+
+  /* ==============SCOPE/CONTROL FLAG===============================================*/
+  CASE
+  WHEN STATUS = 'P' THEN 'Y'
+  ELSE 'N'
+  END AS POSTED_FLAG,
+
+  CASE
+  WHEN ACTUAL_FLAG = 'A' THEN 'Y'
+  ELSE 'N'
+  END AS ACTUAL_JE_FLAG,
+
+  CASE
+  WHEN PERIOND_NAME IN 
+  'JAN25','FEB25', 
+
+  
 
   
 
