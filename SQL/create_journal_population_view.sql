@@ -109,9 +109,74 @@ LEFT JOIN GL_LEDGERS LED
 ),
 
 STANDARDIZED AS (
+/*------------------------------------------------------------------------------
+  Note:
+  This layer standardizes naming conventions, derives analytical fields, and adds
+  data quality/control flags.
+---------------------------------------------------------------------------------*/
+  SELECT
+  /* ==============CARRY-FORWARD KEYS============================================*/ 
+  JE_HEADER_ID,
+  JE_LINE_NUM,
+  CODE_COMBINATION_ID,
+  JE_BATCH_ID,
+  LEDGER_ID,
+  CREATED_BY,
+
+  /*===============UNIQUE ROW KEY==================================================
+    Combines JE header ID and line number for traceability.
+  ================================================================================*/
+  CAST(JE_HEADER_ID AS TEXT) ||" - "|| CAST(JE_LINE_NUM AS TEXT) AS JE_LINE_KEY,
+
+  /* ==============PERIOD AND DATE================================================*/ 
+  PERIOD_NAME,
+  EFFECTIVE_DATE,
+  LINE_CREATION_DATE,
+
+  /* ==============BUSINESS-FREIDNLY SEGMENT RENAMING==============================*/ 
+  SEGMENT1 AS COMPANY_CODE,
+  SEGMENT2 AS COST_CENTRE_CODE,
+  SEGMENT3 AS ACCOUNT_CODE,
+  SEGMENT4 AS INTERCOMPANY_FLAG,
+
+  /* ==============DESCRIPTION AND NAME============================================*/ 
+  LINE_DESCRIPTION,
+  HEADER_DESCRIPTION,
+  BATCH_DESCRIPTION,
+  HEADER_NAME,
+  BATCH_NAME,
+  LEDGER_NAME,
+
+  /* ==============CURRENCY CODE===================================================*/
+  LINE_CURRENCY_CODE,
+  HEADER_CURRENCY_CODE,
+
+  /* ==============RAW AMOUNT======================================================*/
+  ENTERED_DR,
+  ENTERED_CR,
+  ACCOUNTED_DR,
+  ACCOUNTED_CR,
+
+  /* ==============NET AMOUNT======================================================*/
+  (ENTERED_DR - ENTERED_CR) AS ENTERED_NET,
+  (ACCOUNTED_DR - ACCOUNTED_CR) AS ACCOUNTED_NET,
+
+  /* ==============DIRECTION INDICATORS=============================================*/
+  CASE
+  WHEN (ENTERED_DR - ENTERED_CR) > 0 THEN 'DEBIT'
+  WHEN (ENTERED_DR - ENTERED_CR) < 0 THEN 'CREDIT'
+  ELSE 'ZERO'
+  END AS ENTERED_NET-DIRECTION,
+
+  CASE
+  WHEN (ACCOUNTED_DR - ACCOUNTED_CR) > 0 THEN 'DEBIT'
+  WHEN (ACCOUNTED_DR - ACCOUNTED_CR) < 0 THEN 'CREDIT'
+  ELSE 'ZERO'
+  END AS ACCOUNTED_NET_DIRECTION,
 
   
 
+  
 
 
 
