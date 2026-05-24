@@ -237,11 +237,35 @@ FROM RAW_JOINED
 
 ),
 
+FLIERED POPULATION AS (
+  /* ------------------------------------------------------------------------------------------
+  NOTE:
+  This layer consolidates business scope rules into one final flag.
+  Keeping flags before final filtering improves reviewability.
+  ------------------------------------------------------------------------------------------*/
+  SELECT
+  *,
+  CASE
+  WHEN POSTED_FLAG = 'Y',
+  AND ACTUAL_JE_FLAG = 'Y',
+  AND PERIOD_SCOPE_FLAG = 'Y',
+  AND PRIMARY_LEDGER_FLAG = 'Y',
+  THEN 'Y'
+  ELSE 'N'
+  END AS POPULATION_SCOPE_FLAG
 
+  FROM STANDARDIZED
+)
+
+/* ------------------------------------------------------------------------------------------
+  FINAL OUTPUT:
+  This is the reusable journal line-level population object.
+  Downstream scripts can directly reference JOURNAL_POPULATION.
+  ------------------------------------------------------------------------------------------*/
   
-
-  
-
+SELECT *
+FROM FILTERED_POPULATION
+WHERE POPULATION_SCOPE_FLAG = 'Y'
   
 
   
