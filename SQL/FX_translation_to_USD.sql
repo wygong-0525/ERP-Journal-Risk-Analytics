@@ -29,4 +29,27 @@ USD_TRANSLATED_JOURNAL_POPULATION
 
 ================================================================================================================================= */
 
+CREATE VIEW USD_TRANSLATED_JOURNAL_POPULATION AS
 
+WITH FX_RAW_UNIONED AS (
+  /* -------------------------------------------------------------------------------------------------------------------------------
+  Step 1:
+  Bring all raw FRED FX feeds into one common structure.
+
+  Note:
+  Each FRED file has a date column and a rate column.
+  We manually assign FROM_CURRENCY and TO_CURRENCY here so that all feeds can be treated consistently downstream.
+  ------------------------------------------------------------------------------------------------------------------------------- */
+
+SELECT
+  observation_date AS RATE_DATE.
+  
+
+
+
+
+
+
+
+
+  
