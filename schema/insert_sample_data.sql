@@ -71,18 +71,18 @@ INSERT INTO GL_JE_HEADER (
     REVERSED_JE_HEADER_ID
 )
 VALUES
-(9001, 1001, 'Manual',      'JAN25_JE', 'GBP', 'P', 'A', 101, 5001, 'January revenue journal',   NULL),
-(9002, 1001, 'Spreadsheet', 'FEB25_JE', 'GBP', 'P', 'A', 301, 5002, 'February rent journal',     NULL),
-(9003, 1001, 'System',      'MAR25_JE', 'GBP', 'P', 'A', 201, 5003, 'March payroll journal',      NULL),
-(9004, 1001, 'Manual',      'APR25_JE', 'GBP', 'P', 'A', 102, 5004, 'April receivable journal',   NULL),
-(9005, 1001, 'Manual',      'MAY25_JE', 'GBP', 'P', 'A', 101, 5005, 'May revenue journal',        NULL),
-(9006, 1001, 'Spreadsheet', 'JUN25_JE', 'GBP', 'P', 'A', 301, 5006, 'June rent journal',          NULL),
-(9007, 1001, 'System',      'JUL25_JE', 'GBP', 'P', 'A', 201, 5007, 'July payroll journal',       NULL),
-(9008, 1001, 'Manual',      'AUG25_JE', 'GBP', 'P', 'A', 102, 5008, 'August receivable journal',  NULL),
-(9009, 1001, 'Manual',      'SEP25_JE', 'GBP', 'P', 'A', 101, 5009, 'September revenue journal',  NULL),
-(9010, 1001, 'Spreadsheet', 'OCT25_JE', 'GBP', 'P', 'A', 301, 5010, 'October rent journal',       NULL),
-(9011, 1001, 'System',      'NOV25_JE', 'GBP', 'P', 'A', 201, 5011, 'November payroll journal',   NULL),
-(9012, 1001, 'Manual',      'DEC25_JE', 'GBP', 'P', 'A', 102, 5012, 'December receivable journal', NULL);
+(9001, 1001, 'Manual',      'JAN25_JE', 'GBP', 'P', 'A', 101, 5001, 'January revenue journal', NULL),
+(9002, 1001, 'Spreadsheet', 'FEB25_JE', 'EUR', 'P', 'A', 301, 5002, 'February rent journal', NULL),
+(9003, 1001, 'System',      'MAR25_JE', 'BRL', 'P', 'A', 201, 5003, 'March payroll journal', NULL),
+(9004, 1001, 'Manual',      'APR25_JE', 'JPY', 'P', 'A', 102, 5004, 'April receivable journal', NULL),
+(9005, 1001, 'Manual',      'MAY25_JE', 'CAD', 'P', 'A', 101, 5005, 'May revenue journal', NULL),
+(9006, 1001, 'Spreadsheet', 'JUN25_JE', 'GBP', 'P', 'A', 301, 5006, 'June rent journal', NULL),
+(9007, 1001, 'System',      'JUL25_JE', 'EUR', 'P', 'A', 201, 5007, 'July payroll journal', NULL),
+(9008, 1001, 'Manual',      'AUG25_JE', 'BRL', 'P', 'A', 102, 5008, 'August receivable journal', NULL),
+(9009, 1001, 'Manual',      'SEP25_JE', 'JPY', 'P', 'A', 101, 5009, 'September revenue journal', NULL),
+(9010, 1001, 'Spreadsheet', 'OCT25_JE', 'CAD', 'P', 'A', 301, 5010, 'October rent journal', NULL),
+(9011, 1001, 'System',      'NOV25_JE', 'GBP', 'P', 'A', 201, 5011, 'November payroll journal', NULL),
+(9012, 1001, 'Manual',      'DEC25_JE', 'EUR', 'P', 'A', 102, 5012, 'December receivable journal', NULL);
 
 INSERT INTO GL_JE_LINES (
     JE_HEADER_ID,
@@ -99,53 +99,41 @@ INSERT INTO GL_JE_LINES (
     CREATION_DATE
 )
 VALUES
--- JAN-25: Cash Dr / Revenue Cr
-(9001, 1, 10001, 1000.00,    0.00, 1250.00,    0.00, 'GBP', 'Cash receipt',         'JAN-25', '2025-01-31', '2025-01-31'),
-(9001, 2, 10005,    0.00, 1000.00,    0.00, 1250.00, 'GBP', 'Revenue recognition',  'JAN-25', '2025-01-31', '2025-01-31'),
+(9001, 1, 10001, 1000.00, 0.00, 1250.00, 0.00, 'GBP', 'Cash receipt', 'JAN25', '2025-01-31', '2025-01-31'),
+(9001, 2, 10005, 0.00, 1000.00, 0.00, 1250.00, 'GBP', 'Revenue recognition', 'JAN25', '2025-01-31', '2025-01-31'),
 
--- FEB-25: Rent Expense Dr / AP Cr
-(9002, 1, 10007,  300.00,    0.00,  375.00,    0.00, 'GBP', 'Rent expense',         'FEB-25', '2025-02-28', '2025-02-28'),
-(9002, 2, 10003,    0.00,  300.00,    0.00,  375.00, 'GBP', 'Accrued payable',      'FEB-25', '2025-02-28', '2025-02-28'),
+(9002, 1, 10007, 300.00, 0.00, 375.00, 0.00, 'EUR', 'Rent expense', 'FEB25', '2025-02-28', '2025-02-28'),
+(9002, 2, 10003, 0.00, 300.00, 0.00, 375.00, 'EUR', 'Accrued payable', 'FEB25', '2025-02-28', '2025-02-28'),
 
--- MAR-25: Salary Expense Dr / AP Cr
-(9003, 1, 10006,  500.00,    0.00,  625.00,    0.00, 'GBP', 'Salary expense',       'MAR-25', '2025-03-31', '2025-03-31'),
-(9003, 2, 10003,    0.00,  500.00,    0.00,  625.00, 'GBP', 'Payroll payable',      'MAR-25', '2025-03-31', '2025-03-31'),
+(9003, 1, 10006, 500.00, 0.00, 625.00, 0.00, 'BRL', 'Salary expense', 'MAR25', '2025-03-31', '2025-03-31'),
+(9003, 2, 10003, 0.00, 500.00, 0.00, 625.00, 'BRL', 'Payroll payable', 'MAR25', '2025-03-31', '2025-03-31'),
 
--- APR-25: AR Dr / Revenue Cr
-(9004, 1, 10002,  800.00,    0.00, 1000.00,    0.00, 'GBP', 'Accounts receivable',  'APR-25', '2025-04-30', '2025-04-30'),
-(9004, 2, 10005,    0.00,  800.00,    0.00, 1000.00, 'GBP', 'Revenue posting',      'APR-25', '2025-04-30', '2025-04-30'),
+(9004, 1, 10002, 800.00, 0.00, 1000.00, 0.00, 'JPY', 'Accounts receivable', 'APR25', '2025-04-30', '2025-04-30'),
+(9004, 2, 10005, 0.00, 800.00, 0.00, 1000.00, 'JPY', 'Revenue posting', 'APR25', '2025-04-30', '2025-04-30'),
 
--- MAY-25: Cash Dr / Revenue Cr
-(9005, 1, 10001, 1200.00,    0.00, 1500.00,    0.00, 'GBP', 'Cash receipt',         'MAY-25', '2025-05-31', '2025-05-31'),
-(9005, 2, 10005,    0.00, 1200.00,    0.00, 1500.00, 'GBP', 'Revenue recognition',  'MAY-25', '2025-05-31', '2025-05-31'),
+(9005, 1, 10001, 1200.00, 0.00, 1500.00, 0.00, 'CAD', 'Cash receipt', 'MAY25', '2025-05-31', '2025-05-31'),
+(9005, 2, 10005, 0.00, 1200.00, 0.00, 1500.00, 'CAD', 'Revenue recognition', 'MAY25', '2025-05-31', '2025-05-31'),
 
--- JUN-25: Rent Expense Dr / AP Cr
-(9006, 1, 10007,  350.00,    0.00,  437.50,    0.00, 'GBP', 'Rent expense',         'JUN-25', '2025-06-30', '2025-06-30'),
-(9006, 2, 10003,    0.00,  350.00,    0.00,  437.50, 'GBP', 'Accrued payable',      'JUN-25', '2025-06-30', '2025-06-30'),
+(9006, 1, 10007, 350.00, 0.00, 437.50, 0.00, 'GBP', 'Rent expense', 'JUN25', '2025-06-30', '2025-06-30'),
+(9006, 2, 10003, 0.00, 350.00, 0.00, 437.50, 'GBP', 'Accrued payable', 'JUN25', '2025-06-30', '2025-06-30'),
 
--- JUL-25: Salary Expense Dr / AP Cr
-(9007, 1, 10006,  550.00,    0.00,  687.50,    0.00, 'GBP', 'Salary expense',       'JUL-25', '2025-07-31', '2025-07-31'),
-(9007, 2, 10003,    0.00,  550.00,    0.00,  687.50, 'GBP', 'Payroll payable',      'JUL-25', '2025-07-31', '2025-07-31'),
+(9007, 1, 10006, 550.00, 0.00, 687.50, 0.00, 'EUR', 'Salary expense', 'JUL25', '2025-07-31', '2025-07-31'),
+(9007, 2, 10003, 0.00, 550.00, 0.00, 687.50, 'EUR', 'Payroll payable', 'JUL25', '2025-07-31', '2025-07-31'),
 
--- AUG-25: AR Dr / Revenue Cr
-(9008, 1, 10002,  900.00,    0.00, 1125.00,    0.00, 'GBP', 'Accounts receivable',  'AUG-25', '2025-08-31', '2025-08-31'),
-(9008, 2, 10005,    0.00,  900.00,    0.00, 1125.00, 'GBP', 'Revenue posting',      'AUG-25', '2025-08-31', '2025-08-31'),
+(9008, 1, 10002, 900.00, 0.00, 1125.00, 0.00, 'BRL', 'Accounts receivable', 'AUG25', '2025-08-31', '2025-08-31'),
+(9008, 2, 10005, 0.00, 900.00, 0.00, 1125.00, 'BRL', 'Revenue posting', 'AUG25', '2025-08-31', '2025-08-31'),
 
--- SEP-25: Cash Dr / Revenue Cr
-(9009, 1, 10001, 1100.00,    0.00, 1375.00,    0.00, 'GBP', 'Cash receipt',         'SEP-25', '2025-09-30', '2025-09-30'),
-(9009, 2, 10005,    0.00, 1100.00,    0.00, 1375.00, 'GBP', 'Revenue recognition',  'SEP-25', '2025-09-30', '2025-09-30'),
+(9009, 1, 10001, 1100.00, 0.00, 1375.00, 0.00, 'JPY', 'Cash receipt', 'SEP25', '2025-09-30', '2025-09-30'),
+(9009, 2, 10005, 0.00, 1100.00, 0.00, 1375.00, 'JPY', 'Revenue recognition', 'SEP25', '2025-09-30', '2025-09-30'),
 
--- OCT-25: Rent Expense Dr / AP Cr
-(9010, 1, 10007,  320.00,    0.00,  400.00,    0.00, 'GBP', 'Rent expense',         'OCT-25', '2025-10-31', '2025-10-31'),
-(9010, 2, 10003,    0.00,  320.00,    0.00,  400.00, 'GBP', 'Accrued payable',      'OCT-25', '2025-10-31', '2025-10-31'),
+(9010, 1, 10007, 320.00, 0.00, 400.00, 0.00, 'CAD', 'Rent expense', 'OCT25', '2025-10-31', '2025-10-31'),
+(9010, 2, 10003, 0.00, 320.00, 0.00, 400.00, 'CAD', 'Accrued payable', 'OCT25', '2025-10-31', '2025-10-31'),
 
--- NOV-25: Salary Expense Dr / AP Cr
-(9011, 1, 10006,  600.00,    0.00,  750.00,    0.00, 'GBP', 'Salary expense',       'NOV-25', '2025-11-30', '2025-11-30'),
-(9011, 2, 10003,    0.00,  600.00,    0.00,  750.00, 'GBP', 'Payroll payable',      'NOV-25', '2025-11-30', '2025-11-30'),
+(9011, 1, 10006, 600.00, 0.00, 750.00, 0.00, 'GBP', 'Salary expense', 'NOV25', '2025-11-30', '2025-11-30'),
+(9011, 2, 10003, 0.00, 600.00, 0.00, 750.00, 'GBP', 'Payroll payable', 'NOV25', '2025-11-30', '2025-11-30'),
 
--- DEC-25: AR Dr / Revenue Cr
-(9012, 1, 10002, 1000.00,    0.00, 1250.00,    0.00, 'GBP', 'Accounts receivable',  'DEC-25', '2025-12-31', '2025-12-31'),
-(9012, 2, 10005,    0.00, 1000.00,    0.00, 1250.00, 'GBP', 'Revenue posting',      'DEC-25', '2025-12-31', '2025-12-31');
+(9012, 1, 10002, 1000.00, 0.00, 1250.00, 0.00, 'EUR', 'Accounts receivable', 'DEC25', '2025-12-31', '2025-12-31'),
+(9012, 2, 10005, 0.00, 1000.00, 0.00, 1250.00, 'EUR', 'Revenue posting', 'DEC25', '2025-12-31', '2025-12-31');
 
 INSERT INTO GL_BALANCES (
     LEDGER_ID,
