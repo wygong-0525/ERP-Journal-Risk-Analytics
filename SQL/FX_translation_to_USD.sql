@@ -135,7 +135,7 @@ FROM FX_RAW_UNIONED
 
 ),
 
-FX_USD_NORMALISED AS 
+FX_USD_NORMALISED AS (
  
 /* -------------------------------------------------------------------------------------------------------------------------------
   Step 3:
@@ -143,7 +143,21 @@ FX_USD_NORMALISED AS
   This is the rate that will eventually be multiplied by the journal line amount.
   ------------------------------------------------------------------------------------------------------------------------------- */
 
+SELECT
+  RATE_DATE,
+  FROM_CURRENCY,
+  TO_CURRENCY,
+  SOURCE_SERIES,
 
+  CASE
+  WHEN QUOTE_METHOD = 'DIRECT' THEN RAW_RATE_NUMERIC
+  WHEN QUOTE_METHOD = 'INVERSE' THEN 1/RAW_RATE_NUMERIC
+  ELSE NULL
+  END AS USD_CONVERSION RATE,
+
+  CASE
+  WHEN STRFTIME('%M', RATE_DATE) = '01' THEN 'JAN-25'
+  
 
 
 
