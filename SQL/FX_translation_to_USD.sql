@@ -179,11 +179,80 @@ FROM FX_CLENED
 MONTHLY_AVG_RATES AS (
   /* -------------------------------------------------------------------------------------------------------------------------------
   Step 4A:
+  Generate monthly average FX rates.
+  These will be used for profit and loss accounts because P&L represents activity across a period.
+  ------------------------------------------------------------------------------------------------------------------------------- */
+SELECT
+  FROM_CURRENCY,
+  TO_CURRENCY,
+  PERIOD_NAME,
+  'MONTHLY_AVG' AS RATE_TYPE,
+  MAX(RATE_DATE) AS RATE_DATE,
+  AVG(USD_CONVERSION_RATE) AS CONVERSION_RATE
+  
+FROM FX_USD_NORMALIZED
+GROUP BY
+  FROM_CURRENCY,
+  TO_CURRENCY,
+  PERIOD_NAME
 
+),
+
+MONTH_END_CANDIDATES AS (
+  /* -------------------------------------------------------------------------------------------------------------------------------
+  Step 4B:
+  Rank daily FX rates within each currency and each period.
+  The latest available business-day rate in each month will be selected as the month-end rate. 
   ------------------------------------------------------------------------------------------------------------------------------- */
 
+SELECT
+  FROM_CURRENCY,
+  TO_CURRENCY,
+  PERIOD_NAME,
+  RATE_DATE,
+  USD_CONVERSION_RATE,
 
-  
+  ROW_NUMBER() OVER(
+  PARTITION BY FROM_CURRENCY, TO_CURRENCY, PERIOD_NAME
+  ORDER BY RATE_DATE DESC
+  ) AS MONTH_END_RANK
+
+FROM FX_USD_NORMALIZED
+
+),
+
+MONTH_END_RATES AS (
+  /* -------------------------------------------------------------------------------------------------------------------------------
+  Step 4C:
+  Generate month-end FX rates.
+  These will be used for balance sheet accounts because BS balances represent a point-in-time position.
+  ------------------------------------------------------------------------------------------------------------------------------- */
+
+  SELECT
+  FROM_CURRENCT,
+  TO_CURRENCY,
+  PERIOD_NAME,
+  'MONTH_END' AS RATE_TYPE,
+  RATE_DATE,
+  USD_CONVERSION_RATE AS CONVERSION_RATE
+
+  FROM MONTH_END_CANDIDATES
+  WHERE MONTH_END_RANK = 1
+
+),
+
+FX_RATES_STANDARDISED AS (
+  /* -------------------------------------------------------------------------------------------------------------------------------
+  Step 5:
+  Combine both FX rate types into one controlled FX reference layer.
+  ------------------------------------------------------------------------------------------------------------------------------- */
+SELECT * FROM MONTHLY_AVG_RATES
+  UNION ALL
+SELECT * FROM MONTH_END_RATES
+
+),
+
+
 
 
 
