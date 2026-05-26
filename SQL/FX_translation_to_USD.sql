@@ -104,9 +104,44 @@ FX_CLEANED AS (
   USD amount for 1 unit of FROM_CURRENCY
 
   Direct:
-  
+  - GBP/EUR series are already USD per 1 foreign currency
+
+  Inverse:
+  - JPY/CAD/BRL series are quoted as local currency per 1 USD
+  - Therefore, we use 1/rate to get USD per 1 local currency
   ------------------------------------------------------------------------------------------------------------------------------- */
-  
+
+SELECT
+  RATE_DATE,
+  FROM_CURRENCY,
+  TO_CURRENCY,
+  SOURCE_SERIES,
+  QUOTE_METHOD,
+
+  CASE 
+  WHEN RAW_RATE IS NULL THEN NULL
+  WHEN RAW_RATE = '.' THEN NULL
+  ELSE CAST(RAW_RATE AS DECIMAL(18,8))
+  END AS RAW_RATE_NUMERIC,
+
+  CASE
+  WHEN RAW_RATE IS NULL THEN 'INVALID'
+  WHEN RAW_RATE = '.' THEN 'INVALID'
+  WHEN CAST(RAW_RATE AS DECIMAL(18,8))=0 THEN 'INVALID'
+  ELSE 'VALID'
+  END AS RAW_RATE_STATUS
+
+FROM FX_RAW_UNIONED
+
+),
+
+FX_USD_NORMALISED AS 
+ 
+/* -------------------------------------------------------------------------------------------------------------------------------
+  Step 3:
+  Standardized all valid FX rates into USD conversion rates.
+  This is the rate that will eventually be multiplied by the journal line amount.
+  ------------------------------------------------------------------------------------------------------------------------------- */
 
 
 
