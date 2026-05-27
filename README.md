@@ -47,7 +47,18 @@ Examples:
 * LEFT JOIN population preservation
 * manual vs system journal tagging
 
-
+## FX Translation:
+The project also includes an enterprise-style FX translation workflow converting local-currency balances into USD.
+FX rates were downloaded from publicly available market-data sources and standardized using SQL transformation logic.
+Currencies currently included:
+* EUR
+* GBP
+* JPY
+* AUD
+* BRL
+Translation methodology:
+* Balance Sheet accounts → Month-end FX rates
+* P&L accounts → Monthly average FX rates
 
 
 
