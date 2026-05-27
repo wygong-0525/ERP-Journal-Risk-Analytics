@@ -252,9 +252,63 @@ SELECT * FROM MONTH_END_RATES
 
 ),
 
+JOURNAL_REQUIRED_RATE AS (
+ /* -------------------------------------------------------------------------------------------------------------------------------
+  Step 6:
+  Determine which FX rate type each journal line needs.
 
+  Important:
+  - This is based on BS_PL_FLAG from JOURNAL_POPULATION.
+  - It uses LINE_CURRENCY_CODE as the source currency.
+  - Header currency is not used for translation.
+  ------------------------------------------------------------------------------------------------------------------------------- */
 
+SELECT
+  JP.*
 
+  CASE 
+  WHEN JP.LINE_CURRENCY_CODE = 'USD' THEN 'NO_RATE_REQUIRED'
+  WHEN JP.BS_PL_FLAG = 'BS' THE 'MONTH_END'
+  WHEN JP.BS_PL_FLAG = 'PL' THEN 'MONTHLY_AVG'
+  ELSE 'UNMAPPED_ACCOUNT_CLASS'
+  END AS REQUIRED_RATE_TYPE
+
+FROM JOURNAL_POPULATION JP
+
+),
+
+JOURNAL_FX_ENRICHED AS (
+  /* -------------------------------------------------------------------------------------------------------------------------------
+  Step 7:
+  Join each journal line to the appropriate FX rate.
+
+  Join keys:
+  - line local currency
+  - USD target currency
+  - period name
+  - required rate type
+  ------------------------------------------------------------------------------------------------------------------------------- */
+
+SELECT
+  JRR.*
+
+  FX.RATE_TYPE AS APPLIED_RATE_TYPE,
+  FX.RATE_DATE AS APPLIED_RATE_DATE,
+  FX.CONVERSION_RATE AS USD_CONVERSION_RATE,
+
+  CASE 
+  WHEN JRR.LINE_CURRENCY_CODE = 'USD' THEN 1
+  ELSE FX.CONVERSION_RATE
+  END AS EFFECTIVE_USD_RATE
+
+FROM JOURNAL_REQUIRED_RATE JRR
+  LEFT JOIN FX_RATE_STANDARDIZED FX
+  ON JRR.LINE_CURRENCY_CODE = FX.FROM_CURRENCY
+  AND FX.TO_CURRENCY = 'USD'
+  AND JRR.PERIOND_NAME = FX.PERIOD_NAME
+  AND JRR.REQUIRED_RATE_TYPE = FX.RATE_TYPE
+
+),
 
 
 
