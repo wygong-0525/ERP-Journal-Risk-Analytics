@@ -63,10 +63,28 @@ Translation methodology:
 * Balance Sheet accounts → Month-end FX rates
 * P&L accounts → Monthly average FX rates
 
+## Important Notes:
+* Journal-entry data used in this repository is sample/demo data only.
+* No real company financial data is included.
+* FX market rates are sourced from publicly available external datasets.
 
+## Planned Enhancements:
+Future testing modules may include:
 
+* journal completeness testing
+* threshold analysis
+* high-risk journal sampling
+* trial balance reconciliation
+* automated journal risk scoring
 
+These procedures are intentionally separated from the extraction/transformation layer to reflect realistic enterprise workflow design.
 
-
+## Technologies:
+* SQL
+* SQLite / PostgreSQL-style syntax
+* GitHub
+* ERP-style financial modelling
+* Financial transformation logic
+* FX translation methodology
 
 
