@@ -39,6 +39,7 @@ Main transformation procedures include:
 * account classification logic
 * derived financial calculations
 * standardized production-style SQL CTE workflows
+
 Examples:
 * ACCOUNTED_DR - ACCOUNTED_CR → ACCOUNTED_NET
 * ENTERED_DR - ENTERED_CR → ENTERED_NET
