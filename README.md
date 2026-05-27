@@ -19,3 +19,14 @@ This project was designed to demonstrate practical SQL skills commonly used in:
 * FX translation to USD using real market FX data
 * Month-end and monthly-average FX methodology
 
+## ERP Tables Simulated:
+The project includes simplified ERP-style financial tables:
+* GL_JE_LINES
+* GL_JE_HEADERS
+* GL_JE_BATCHES
+* GL_JE_CODE_COMBINATIONS
+* GL_BALANCES
+* GL_LEDGERS
+* FND_USER
+The schema was intentionally designed to simulate realistic enterprise financial data relationships and SQL join logic.
+
