@@ -30,3 +30,28 @@ The project includes simplified ERP-style financial tables:
 * FND_USER
 The schema was intentionally designed to simulate realistic enterprise financial data relationships and SQL join logic.
 
+## Journal Transformation Workflow:
+Main transformation procedures include:
+* relational joins across ERP tables
+* standardized field renaming
+* journal population cleansing
+* business-rule filtering
+* account classification logic
+* derived financial calculations
+* standardized production-style SQL CTE workflows
+Examples:
+* ACCOUNTED_DR - ACCOUNTED_CR → ACCOUNTED_NET
+* ENTERED_DR - ENTERED_CR → ENTERED_NET
+* CASE WHEN account mapping logic
+* LEFT JOIN population preservation
+* manual vs system journal tagging
+
+
+
+
+
+
+
+
+
+
