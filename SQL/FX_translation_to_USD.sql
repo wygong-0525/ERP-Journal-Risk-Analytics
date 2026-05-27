@@ -264,7 +264,7 @@ JOURNAL_REQUIRED_RATE AS (
   ------------------------------------------------------------------------------------------------------------------------------- */
 
 SELECT
-  JP.*
+  JP.*,
 
   CASE 
   WHEN JP.LINE_CURRENCY_CODE = 'USD' THEN 'NO_RATE_REQUIRED'
@@ -290,7 +290,7 @@ JOURNAL_FX_ENRICHED AS (
   ------------------------------------------------------------------------------------------------------------------------------- */
 
 SELECT
-  JRR.*
+  JRR.*,
 
   FX.RATE_TYPE AS APPLIED_RATE_TYPE,
   FX.RATE_DATE AS APPLIED_RATE_DATE,
@@ -310,8 +310,52 @@ FROM JOURNAL_REQUIRED_RATE JRR
 
 ),
 
+TRANSLATED AS (
+  /* -------------------------------------------------------------------------------------------------------------------------------
+  Step 8:
+  Apply FX translation to journal line amounts.
+  The original line amount is not changed.
+  New USD translated fields are added.
+  ------------------------------------------------------------------------------------------------------------------------------- */
 
+SELECT
+  JFE.*,
 
+  JFE.ENTERED_DR * JFE.EFFECTIVE_USD_RATE AS ENTERED_DR_USD,
+  JFE.ENTERED_CR * JFE.EFFECTIVE_USD_RATE AS ENTERED_CR_USD,
+  JFE.ENTERED_NET * JFE.EFFECTIVE_USD_RATE AS ENTERED_USD_NET,
+
+  JFE.ACCOUNTED_DR * JFE.EFFECTIVE_USD_RATE AS ACCOUNTED_DR_USD,
+  JFE.ACCOUNTED_CR * JFE.EFFECTIVE_USD_RATE AS ACCOUNTED_CR_USD,
+  JFE.ACCOUNTED_NET * JFE.EFFECTIVE_USD_RATE AS ACCOUNTED_NET_USD,
+
+  CASE
+  WHEN JFE.LINE_CURRENCY_CODE = 'USD' THEN 'N'
+  WHEN JFE.REQUIRED_RATE_TYPE = 'UNMAPPED_ACCOUNT_CLASS' THEN 'Y'
+  WHEN JFE.USD_CONVERSION_RATE IS NULL THEN 'Y'
+  WHEN JFE.USD_CONVERSION_RATE = 0 THEN 'Y'
+  ELSE 'N'
+  END AS FX_EXCEPTION_FLAG,
+
+  CASE
+  WHEN JFE.LINE_CURRENCY_CODE = 'USD'
+  THEN 'NO TRANSLATION REQUIRED'
+  WHEN JFE.REQUIRED_RATE_TYPE = 'UNMAPPED_ACCOUNT_CLASS'
+  THEN 'ACCOUNT CLASS IS MAPPED TO BS OR PL'
+  WHEN JFE.USD_CONVERSION_RATE IS NULL
+  THEN 'MISSING FX RATE FOR CURRENCY/PERIOD/RATE TYPE'
+  WHEN JFE.USD_CONVERSION_RATE = 0
+  THEN 'ZERO FX RATE'
+  ELSE 'FX TRANSLATED SUCCESSFULLY'
+  END AS FX_TRANSLATION_STATUS
+
+FROM JOURNAL_FX_ENRICHED JFE
+
+)
+
+SELECT *
+FROM TRANSLATED
+  
 
 
 
