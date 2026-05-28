@@ -1,4 +1,4 @@
-# SQL-journal-risk-analytics
+# ERP-journal-risk-analytics
 Enterprise-style SQL project simulating journal-entry extraction, transformation, and FX translation workflows in a multi-entity financial reporting environment.
 This project was designed to demonstrate practical SQL skills commonly used in:
 * ERP financial systems
