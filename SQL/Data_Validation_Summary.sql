@@ -60,6 +60,17 @@ FROM (
   HAVING ABS(ROUND(SUM(ACCOUNTED_NET))) > 0.01
   ) J
 
+UNION ALL
+
+/* TEST 4: FX translation should not have missing/invalid rates */
+SELECT
+'FX_TRANSLATION_EXCEPTION',
+COUNT(*),
+CASE WHEN COUNT(*) = 0 THEN 'PASS' ELSE 'FAIL' END,
+'Check missing, zero, invalid, or unmapped FX records'
+FROM USD_TRANSLATED_JOURNAL_POPULATION
+WHERE FX_EXCEPTION_FLAG = 'Y'
+
 
 
 
