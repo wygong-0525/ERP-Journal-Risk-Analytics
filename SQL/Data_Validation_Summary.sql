@@ -44,6 +44,21 @@ FROM (
   HAVING COUNT(*) > 1
 ) D
 
+UNION ALL
+
+/* TEST 3: Local/accounted journal should be balanced to zero. */
+
+SELECT
+'LOCAL_JOURNAL_BALANCED_TO_ZERO',
+COUNT(*),
+CASE WHEN COUNT(*)=0 THEN 'PASS' ELSE 'FAIL' END,
+'Check each journal balanced to zero in local/accounted currency'
+FROM (
+  SELECT JE_HEADER_ID
+  FROM USD_TRANSLATED_JOURNAL_POPULATION
+  GROUP BY JE_HEADER_ID
+  HAVING ABS(ROUND(SUM(ACCOUNTED_NET))) > 0.01
+  ) J
 
 
 
